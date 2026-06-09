@@ -24,6 +24,18 @@ export function formatDate(date = undefined, format = 'YYYY-MM-DD') {
 }
 
 /**
+ * @description 轻量深拷贝，优先使用浏览器原生能力，回退到 JSON 方案
+ * @param {any} value
+ * @returns {any}
+ */
+export function deepClone(value) {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(value)
+  }
+  return value == null ? value : JSON.parse(JSON.stringify(value))
+}
+
+/**
  * @param {Function} fn
  * @param {number} wait
  * @returns {Function}  节流函数
@@ -70,8 +82,7 @@ export function debounce(method, wait, immediate) {
       if (callNow) {
         method.apply(context, args)
       }
-    }
-    else {
+    } else {
       // 如果immediate为false，则函数wait毫秒后执行
       timeout = setTimeout(() => {
         /**
@@ -89,7 +100,7 @@ export function debounce(method, wait, immediate) {
  * @returns 睡一会儿，让子弹暂停一下
  */
 export function sleep(time) {
-  return new Promise(resolve => setTimeout(resolve, time))
+  return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 /**

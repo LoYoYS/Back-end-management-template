@@ -1,26 +1,11 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/13 20:54:36
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
 export const defaultLayout = 'normal'
 
 export const defaultPrimaryColor = '#316C72'
 
-// 控制 LayoutSetting 组件是否可见
-export const layoutSettingVisible = true
+export const systemName = import.meta.env.VITE_TITLE || 'Vue Arco Admin'
 
-export const naiveThemeOverrides = {
-  common: {
-    primaryColor: '#316C72FF',
-    primaryColorHover: '#316C72E3',
-    primaryColorPressed: '#2B4C59FF',
-    primaryColorSuppl: '#316C72E3',
-  },
-}
+// 控制布局设置组件是否可见。
+export const layoutSettingVisible = true
 
 export const basePermissions = [
   {
@@ -40,7 +25,7 @@ export const basePermissions = [
         icon: 'i-me:docs',
         order: 1,
         enable: true,
-        show: true,
+        show: true
       },
       {
         code: 'ApiFoxDocs',
@@ -50,17 +35,17 @@ export const basePermissions = [
         icon: 'i-me:apifox',
         order: 2,
         enable: true,
-        show: true,
+        show: true
       },
       {
-        code: 'NaiveUI',
-        name: 'Naive UI',
+        code: 'ArcoDocs',
+        name: 'Arco Design',
         type: 'MENU',
-        path: 'https://www.naiveui.com/zh-CN/os-theme',
-        icon: 'i-me:naiveui',
+        path: 'https://arco.design/vue',
+        icon: 'i-mdi:palette-outline',
         order: 3,
         enable: true,
-        show: true,
+        show: true
       },
       {
         code: 'MyBlog',
@@ -70,8 +55,8 @@ export const basePermissions = [
         icon: 'i-simple-icons:juejin',
         order: 4,
         enable: true,
-        show: true,
-      },
-    ],
-  },
+        show: true
+      }
+    ]
+  }
 ]

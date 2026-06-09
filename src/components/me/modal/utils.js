@@ -15,14 +15,13 @@ function getCss(element, key) {
 
 // 初始化拖拽
 export function initDrag(bar, box) {
-  if (!bar || !box)
-    return
+  if (!bar || !box) return
   const params = {
     left: 0,
     top: 0,
     currentX: 0,
     currentY: 0,
-    flag: false,
+    flag: false
   }
 
   if (getCss(box, 'left') !== 'auto') {
@@ -51,8 +50,7 @@ export function initDrag(bar, box) {
     }
   }
   document.onmousemove = function (e) {
-    if (e.target !== bar && !params.flag)
-      return
+    if (e.target !== bar && !params.flag) return
 
     e.preventDefault() // 阻止默认事件
     // 如果拖拽标志为true

@@ -9,9 +9,9 @@
 <template>
   <AppPage show-footer>
     <div class="flex">
-      <n-card class="min-w-200 w-30%">
+      <a-card class="min-w-200 w-30%">
         <div class="flex items-center">
-          <n-avatar round :size="60" :src="userStore.avatar" class="flex-shrink-0" />
+          <a-avatar :size="60" shape="circle" :image-url="userStore.avatar" class="flex-shrink-0" />
           <div class="ml-20 flex-col">
             <span class="text-20 opacity-80">
               Hello, {{ userStore.nickName ?? userStore.username }}
@@ -20,15 +20,11 @@
           </div>
         </div>
 
-        <p class="mt-28 text-14 opacity-60">
-          一个人几乎可以在任何他怀有无限热忱的事情上成功。
-        </p>
-        <p class="mt-12 text-right text-12 opacity-40">
-          —— 查尔斯·史考伯
-        </p>
-      </n-card>
-      <n-card class="ml-12 w-70%" title="✨ 欢迎使用 Vue Naive Admin 2.0">
-        <template #header-extra>
+        <p class="mt-28 text-14 opacity-60">一个人几乎可以在任何他怀有无限热忱的事情上成功。</p>
+        <p class="mt-12 text-right text-12 opacity-40">—— 查尔斯·史考伯</p>
+      </a-card>
+      <a-card class="ml-12 w-70%" :title="welcomeTitle">
+        <template #extra>
           <a
             class="text-highlight text-14 text-primary hover:underline hover:opacity-80"
             href="https://isme.top"
@@ -44,30 +40,13 @@
           MySql，简单易用，赏心悦目，历经十几次重构和细节打磨，诚意满满！！
         </p>
         <footer class="mt-12 flex items-center justify-end">
-          <n-button
-            type="primary"
-            ghost
-            tag="a"
-            href="https://isme.top"
-            target="__blank"
-          >
-            开发文档
-          </n-button>
-          <n-button
-            type="primary"
-            class="ml-12"
-            tag="a"
-            href="https://github.com/zclzone/vue-naive-admin/tree/2.x"
-            target="__blank"
-          >
-            代码仓库
-          </n-button>
+          <a-button type="outline" href="https://isme.top" target="__blank"> 开发文档 </a-button>
         </footer>
-      </n-card>
+      </a-card>
     </div>
     <div class="mt-12 flex">
-      <n-card class="w-50%" title="💯 特性" segmented>
-        <template #header-extra>
+      <a-card class="w-50%" title="💯 特性">
+        <template #extra>
           <span class="text-highlight opacity-90">👏 历经十几次重构和细节打磨</span>
         </template>
 
@@ -91,7 +70,7 @@
             图标方案，支持自定义图标，支持动态渲染
           </li>
           <li class="py-4">
-            🎨 使用 Naive UI，
+            🎨 使用 Arco Design Vue，
             <span class="text-highlight">极致简洁的代码风格和清爽的页面设计</span>
             ，审美在线，主题轻松定制
           </li>
@@ -119,12 +98,12 @@
             ，用户登录态可控，安全与体验缺一不可
           </li>
           <li class="py-4">
-            ✨ 基于 Naive UI 封装
+            ✨ 基于 Arco Design Vue 封装
             <span class="text-highlight">message</span>
             全局工具方法，支持批量提醒，支持跨页面共享实例
           </li>
           <li class="py-4">
-            ⚡️ 基于 Naive UI 封装常用的业务组件，包含
+            ⚡️ 基于 Arco Design Vue 封装常用的业务组件，包含
             <span class="text-highlight">Page</span>
             组件、
             <span class="text-highlight">CRUD</span>
@@ -134,7 +113,7 @@
           </li>
         </ul>
 
-        <n-divider class="mb-0! mt-12!">
+        <a-divider class="mb-0! mt-12!">
           <p class="text-14 opacity-60">
             👉点击
             <b class="mx-2 transition hover:text-primary">
@@ -142,19 +121,19 @@
             </b>
             查看更多实用功能，持续开发中...
           </p>
-        </n-divider>
-      </n-card>
+        </a-divider>
+      </a-card>
 
-      <n-card class="ml-12 w-50%" title="🛠️ 技术栈" segmented>
+      <a-card class="ml-12 w-50%" title="🛠️ 技术栈">
         <VChart :option="skillOption" autoresize />
-      </n-card>
+      </a-card>
     </div>
 
-    <n-card class="mt-12" title="⚡️ 趋势" segmented>
+    <a-card class="mt-12" title="⚡️ 趋势">
       <div class="h-400">
         <VChart :option="trendOption" autoresize />
       </div>
-    </n-card>
+    </a-card>
   </AppPage>
 </template>
 
@@ -165,9 +144,11 @@ import * as echarts from 'echarts/core'
 import { UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
+import { systemName } from '@/settings'
 import { useUserStore } from '@/store'
 
 const userStore = useUserStore()
+const welcomeTitle = `✨ 欢迎使用 ${systemName}`
 
 echarts.use([
   TooltipComponent,
@@ -177,7 +158,7 @@ echarts.use([
   LineChart,
   CanvasRenderer,
   UniversalTransition,
-  PieChart,
+  PieChart
 ])
 
 const trendOption = {
@@ -186,22 +167,22 @@ const trendOption = {
     axisPointer: {
       type: 'cross',
       crossStyle: {
-        color: '#999',
-      },
-    },
+        color: '#999'
+      }
+    }
   },
   legend: {
     top: '5%',
-    data: ['star', 'fork'],
+    data: ['star', 'fork']
   },
   xAxis: [
     {
       type: 'category',
       data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
       axisPointer: {
-        type: 'shadow',
-      },
-    },
+        type: 'shadow'
+      }
+    }
   ],
   yAxis: [
     {
@@ -210,8 +191,8 @@ const trendOption = {
       max: 3000,
       interval: 500,
       axisLabel: {
-        formatter: '{value}',
-      },
+        formatter: '{value}'
+      }
     },
     {
       type: 'value',
@@ -219,23 +200,23 @@ const trendOption = {
       max: 500,
       interval: 100,
       axisLabel: {
-        formatter: '{value}',
-      },
-    },
+        formatter: '{value}'
+      }
+    }
   ],
   series: [
     {
       name: 'star',
       type: 'line',
-      data: [200, 320, 520, 550, 600, 805, 888, 950, 1300, 2503, 2702, 2712],
+      data: [200, 320, 520, 550, 600, 805, 888, 950, 1300, 2503, 2702, 2712]
     },
     {
       name: 'fork',
       yAxisIndex: 1,
       type: 'bar',
-      data: [40, 72, 110, 115, 121, 175, 180, 201, 260, 398, 423, 455],
-    },
-  ],
+      data: [40, 72, 110, 115, 121, 175, 180, 201, 260, 398, 423, 455]
+    }
+  ]
 }
 
 const skillOption = {
@@ -243,10 +224,10 @@ const skillOption = {
     trigger: 'item',
     formatter({ name, value }) {
       return `${name} ${value}%`
-    },
+    }
   },
   legend: {
-    left: 'center',
+    left: 'center'
   },
   series: [
     {
@@ -257,30 +238,30 @@ const skillOption = {
       itemStyle: {
         borderRadius: 10,
         borderColor: '#fff',
-        borderWidth: 2,
+        borderWidth: 2
       },
       label: {
         show: false,
-        position: 'center',
+        position: 'center'
       },
       emphasis: {
         label: {
           show: true,
           fontSize: 36,
-          fontWeight: 'bold',
-        },
+          fontWeight: 'bold'
+        }
       },
       labelLine: {
-        show: false,
+        show: false
       },
       data: [
         { value: 38.5, name: 'Vue' },
         { value: 37.0, name: 'JavaScript' },
         { value: 6.5, name: 'CSS' },
         { value: 6.2, name: 'HTML' },
-        { value: 1.8, name: 'Other' },
-      ],
-    },
-  ],
+        { value: 1.8, name: 'Other' }
+      ]
+    }
+  ]
 }
 </script>

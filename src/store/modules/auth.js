@@ -11,7 +11,7 @@ import { usePermissionStore, useRouterStore, useTabStore, useUserStore } from '@
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    accessToken: undefined,
+    accessToken: undefined
   }),
   actions: {
     setToken({ accessToken }) {
@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth', {
       const { router, route } = useRouterStore()
       router.replace({
         path: '/login',
-        query: route.query,
+        query: route.query
       })
     },
     async switchCurrentRole(data) {
@@ -51,9 +51,9 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       this.resetLoginState()
       this.toLogin()
-    },
+    }
   },
   persist: {
-    key: 'vue-naivue-admin_auth',
-  },
+    key: 'vue-naivue-admin_auth'
+  }
 })

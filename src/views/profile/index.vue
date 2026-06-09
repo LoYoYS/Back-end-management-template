@@ -8,98 +8,82 @@
 
 <template>
   <AppPage show-footer>
-    <n-card>
-      <n-space align="center">
-        <n-avatar round :size="100" :src="userStore.avatar" />
+    <a-card>
+      <a-space align="center">
+        <a-avatar :size="100" shape="circle" :image-url="userStore.avatar" />
         <div class="ml-20">
           <div class="flex items-center text-16">
             <span>用户名:</span>
             <span class="ml-12 opacity-80">{{ userStore.username }}</span>
-            <n-button class="ml-32" type="primary" text @click="pwdModalRef.open()">
+            <a-button class="ml-32" type="text" @click="pwdModalRef.open()">
               <i class="i-fe:edit mr-4" />
               修改密码
-            </n-button>
+            </a-button>
           </div>
           <div class="mt-16 flex items-center">
-            <n-button type="primary" ghost @click="avatarModalRef.open()">
-              更改头像
-            </n-button>
+            <a-button type="outline" @click="avatarModalRef.open()"> 更改头像 </a-button>
             <span class="ml-12 opacity-60">
               修改头像只支持在线链接，不提供上传图片功能，如有需要可自行对接！
             </span>
           </div>
         </div>
-      </n-space>
-    </n-card>
+      </a-space>
+    </a-card>
 
-    <n-card class="mt-20" title="个人资料信息">
-      <template #header-extra>
-        <n-button type="primary" text @click="profileModalRef.open()">
+    <a-card class="mt-20" title="个人资料信息">
+      <template #extra>
+        <a-button type="text" @click="profileModalRef.open()">
           <i class="i-fe:edit mr-4" />
           修改资料
-        </n-button>
+        </a-button>
       </template>
 
-      <n-descriptions
-        label-placement="left"
-        :label-style="{ width: '200px', textAlign: 'center' }"
-        :column="1"
-        bordered
-      >
-        <n-descriptions-item label="昵称">
+      <a-descriptions :column="1" bordered>
+        <a-descriptions-item label="昵称">
           {{ userStore.nickName }}
-        </n-descriptions-item>
-        <n-descriptions-item label="性别">
+        </a-descriptions-item>
+        <a-descriptions-item label="性别">
           {{ genders.find((item) => item.value === userStore.userInfo?.gender)?.label ?? '未知' }}
-        </n-descriptions-item>
-        <n-descriptions-item label="地址">
+        </a-descriptions-item>
+        <a-descriptions-item label="地址">
           {{ userStore.userInfo?.address }}
-        </n-descriptions-item>
-        <n-descriptions-item label="邮箱">
+        </a-descriptions-item>
+        <a-descriptions-item label="邮箱">
           {{ userStore.userInfo?.email }}
-        </n-descriptions-item>
-      </n-descriptions>
-    </n-card>
+        </a-descriptions-item>
+      </a-descriptions>
+    </a-card>
 
     <MeModal ref="avatarModalRef" width="420px" title="更改头像" @ok="handleAvatarSave()">
-      <n-input v-model:value="newAvatar" />
+      <a-input v-model="newAvatar" />
     </MeModal>
 
     <MeModal ref="pwdModalRef" title="修改密码" width="420px" @ok="handlePwdSave()">
-      <n-form
-        ref="pwdFormRef"
-        :model="pwdForm"
-        label-placement="left"
-        require-mark-placement="left"
-      >
-        <n-form-item label="原密码" path="oldPassword" :rule="required">
-          <n-input v-model:value="pwdForm.oldPassword" type="password" placeholder="请输入原密码" show-password-on="mousedown" />
-        </n-form-item>
-        <n-form-item label="新密码" path="newPassword" :rule="required">
-          <n-input v-model:value="pwdForm.newPassword" type="password" placeholder="请输入新密码" show-password-on="mousedown" />
-        </n-form-item>
-      </n-form>
+      <a-form ref="pwdFormRef" :model="pwdForm" layout="horizontal">
+        <a-form-item label="原密码" field="oldPassword" :rules="required">
+          <a-input-password v-model="pwdForm.oldPassword" placeholder="请输入原密码" />
+        </a-form-item>
+        <a-form-item label="新密码" field="newPassword" :rules="required">
+          <a-input-password v-model="pwdForm.newPassword" placeholder="请输入新密码" />
+        </a-form-item>
+      </a-form>
     </MeModal>
 
     <MeModal ref="profileModalRef" title="修改资料" width="420px" @ok="handleProfileSave()">
-      <n-form ref="profileFormRef" :model="profileForm" label-placement="left">
-        <n-form-item label="昵称" path="nickName">
-          <n-input v-model:value="profileForm.nickName" placeholder="请输入昵称" />
-        </n-form-item>
-        <n-form-item label="性别" path="gender">
-          <n-select
-            v-model:value="profileForm.gender"
-            :options="genders"
-            placeholder="请选择性别"
-          />
-        </n-form-item>
-        <n-form-item label="地址" path="address">
-          <n-input v-model:value="profileForm.address" placeholder="请输入地址" />
-        </n-form-item>
-        <n-form-item label="邮箱" path="email">
-          <n-input v-model:value="profileForm.email" placeholder="请输入邮箱" />
-        </n-form-item>
-      </n-form>
+      <a-form ref="profileFormRef" :model="profileForm" layout="horizontal">
+        <a-form-item label="昵称" field="nickName">
+          <a-input v-model="profileForm.nickName" placeholder="请输入昵称" />
+        </a-form-item>
+        <a-form-item label="性别" field="gender">
+          <a-select v-model="profileForm.gender" :options="genders" placeholder="请选择性别" />
+        </a-form-item>
+        <a-form-item label="地址" field="address">
+          <a-input v-model="profileForm.address" placeholder="请输入地址" />
+        </a-form-item>
+        <a-form-item label="邮箱" field="email">
+          <a-input v-model="profileForm.email" placeholder="请输入邮箱" />
+        </a-form-item>
+      </a-form>
     </MeModal>
   </AppPage>
 </template>
@@ -115,7 +99,7 @@ const userStore = useUserStore()
 const required = {
   required: true,
   message: '此为必填项',
-  trigger: ['blur', 'change'],
+  trigger: ['blur', 'change']
 }
 
 const [pwdModalRef] = useModal()
@@ -143,7 +127,7 @@ async function handleAvatarSave() {
 const genders = [
   { label: '保密', value: 0 },
   { label: '男', value: 1 },
-  { label: '女', value: 2 },
+  { label: '女', value: 2 }
 ]
 const [profileModalRef] = useModal()
 const [profileFormRef, profileForm, profileValidation] = useForm({
@@ -151,7 +135,7 @@ const [profileFormRef, profileForm, profileValidation] = useForm({
   nickName: userStore.nickName,
   gender: userStore.userInfo?.gender ?? 0,
   address: userStore.userInfo?.address,
-  email: userStore.userInfo?.email,
+  email: userStore.userInfo?.email
 })
 async function handleProfileSave() {
   await profileValidation()

@@ -12,8 +12,7 @@ import { useAuthStore } from '@/store'
 let isConfirming = false
 
 function handleAuthExpired(content, needTip) {
-  if (isConfirming || !needTip)
-    return
+  if (isConfirming || !needTip) return
   isConfirming = true
   $dialog.confirm({
     title: '提示',
@@ -26,7 +25,7 @@ function handleAuthExpired(content, needTip) {
     },
     cancel() {
       isConfirming = false
-    },
+    }
   })
   return false
 }

@@ -21,6 +21,6 @@ export const useRouterStore = defineStore('router', () => {
   return {
     router,
     route,
-    resetRouter,
+    resetRouter
   }
 })

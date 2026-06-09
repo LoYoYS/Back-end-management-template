@@ -9,19 +9,19 @@
 
 import { createStorage } from './storage'
 
-const prefixKey = 'vue-naive-admin_'
+const prefixKey = 'vue-arco-admin_'
 
 export function createLocalStorage(option = {}) {
   return createStorage({
     prefixKey: option.prefixKey || '',
-    storage: localStorage,
+    storage: localStorage
   })
 }
 
 export function createSessionStorage(option = {}) {
   return createStorage({
     prefixKey: option.prefixKey || '',
-    storage: sessionStorage,
+    storage: sessionStorage
   })
 }
 

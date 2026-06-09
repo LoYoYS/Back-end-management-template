@@ -13,12 +13,12 @@ export const useTabStore = defineStore('tab', {
   state: () => ({
     tabs: [],
     activeTab: '',
-    reloading: false,
+    reloading: false
   }),
   getters: {
     activeIndex() {
-      return this.tabs.findIndex(item => item.path === this.activeTab)
-    },
+      return this.tabs.findIndex((item) => item.path === this.activeTab)
+    }
   },
   actions: {
     async setActiveTab(path) {
@@ -29,22 +29,19 @@ export const useTabStore = defineStore('tab', {
       this.tabs = tabs
     },
     addTab(tab = {}) {
-      const findIndex = this.tabs.findIndex(item => item.path === tab.path)
+      const findIndex = this.tabs.findIndex((item) => item.path === tab.path)
       if (findIndex !== -1) {
         this.tabs.splice(findIndex, 1, tab)
-      }
-      else {
+      } else {
         this.setTabs([...this.tabs, tab])
       }
       this.setActiveTab(tab.path)
     },
     async reloadTab(path, keepAlive) {
-      const findItem = this.tabs.find(item => item.path === path)
-      if (!findItem)
-        return
+      const findItem = this.tabs.find((item) => item.path === path)
+      if (!findItem) return
       // 更新key可让keepAlive失效
-      if (keepAlive)
-        findItem.keepAlive = false
+      if (keepAlive) findItem.keepAlive = false
       $loadingBar.start()
       this.reloading = true
       await nextTick()
@@ -56,39 +53,39 @@ export const useTabStore = defineStore('tab', {
       }, 100)
     },
     async removeTab(path) {
-      this.setTabs(this.tabs.filter(tab => tab.path !== path))
+      this.setTabs(this.tabs.filter((tab) => tab.path !== path))
       if (path === this.activeTab) {
         useRouterStore().router?.push(this.tabs[this.tabs.length - 1].path)
       }
     },
     removeOther(curPath = this.activeTab) {
-      this.setTabs(this.tabs.filter(tab => tab.path === curPath))
+      this.setTabs(this.tabs.filter((tab) => tab.path === curPath))
       if (curPath !== this.activeTab) {
         useRouterStore().router?.push(this.tabs[this.tabs.length - 1].path)
       }
     },
     removeLeft(curPath) {
-      const curIndex = this.tabs.findIndex(item => item.path === curPath)
+      const curIndex = this.tabs.findIndex((item) => item.path === curPath)
       const filterTabs = this.tabs.filter((item, index) => index >= curIndex)
       this.setTabs(filterTabs)
-      if (!filterTabs.some(item => item.path === this.activeTab)) {
+      if (!filterTabs.some((item) => item.path === this.activeTab)) {
         useRouterStore().router?.push(filterTabs[filterTabs.length - 1].path)
       }
     },
     removeRight(curPath) {
-      const curIndex = this.tabs.findIndex(item => item.path === curPath)
+      const curIndex = this.tabs.findIndex((item) => item.path === curPath)
       const filterTabs = this.tabs.filter((item, index) => index <= curIndex)
       this.setTabs(filterTabs)
-      if (!filterTabs.some(item => item.path === this.activeTab.value)) {
+      if (!filterTabs.some((item) => item.path === this.activeTab.value)) {
         useRouterStore().router?.push(filterTabs[filterTabs.length - 1].path)
       }
     },
     resetTabs() {
       this.$reset()
-    },
+    }
   },
   persist: {
     pick: ['tabs'],
-    storage: sessionStorage,
-  },
+    storage: sessionStorage
+  }
 })

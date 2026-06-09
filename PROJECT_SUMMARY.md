@@ -5,7 +5,7 @@
 ## 1. 当前项目状态
 
 - 当前项目根目录已经具备前端项目运行所需的主要文件。
-- 当前项目来源于 `vue-naive-admin` 模板。
+- 当前项目来源于一个旧版后台模板，当前 UI 层已经完成 `Arco Design Vue` 迁移。
 
 ## 2. 技术栈
 
@@ -13,7 +13,7 @@
 - 前端框架：`Vue 3`
 - 路由：`vue-router`
 - 状态管理：`Pinia`
-- UI 组件库：`Naive UI`
+- UI 组件库：`Arco Design Vue`
 - 原子化样式：`UnoCSS`
 - 请求库：`Axios`
 - 图表：`ECharts`、`vue-echarts`
@@ -111,7 +111,7 @@
 3. 注册自定义指令
 4. 注册路由与路由守卫
 5. 挂载应用
-6. 初始化 Naive UI 的全局离散 API
+6. 初始化全局消息、弹窗、通知与加载条桥接层
 
 对应调用顺序：
 
@@ -120,7 +120,12 @@
 3. `setupDirectives(app)`
 4. `await setupRouter(app)`
 5. `app.mount('#app')`
-6. `setupNaiveDiscreteApi()`
+6. `setupGlobalDiscreteApi()`
+
+补充说明：
+
+- `setupGlobalDiscreteApi()` 用于初始化全局消息、弹窗、通知与顶部加载条
+- 底层实现为 `Arco Design Vue + nprogress`
 
 ## 7. 根组件与布局体系
 
@@ -130,7 +135,7 @@
 
 根组件承担的职责：
 
-- 注入 Naive UI 全局主题配置
+- 注入 Arco 全局配置与中文语言包
 - 根据当前路由 `meta.layout` 或应用设置选择布局组件
 - 承载页面切换动画
 - 根据 Tab 状态控制 `KeepAlive`
@@ -161,9 +166,9 @@
 
 - 默认布局
 - 默认主题色
-- Naive UI 主题覆盖配置
 - 是否显示布局设置面板
 - 基础权限菜单 `basePermissions`
+- 外部文档入口配置
 
 这里的 `basePermissions` 很重要：
 
@@ -276,7 +281,6 @@ Pinia 初始化文件：
 - 暗黑模式状态
 - 当前布局模式
 - 当前主题色
-- Naive UI 主题覆盖对象
 
 ### 11.2 auth 模块
 
@@ -438,9 +442,9 @@ Pinia 初始化文件：
 
 文件：
 
-- `src/utils/naiveTools.js`
+- `src/utils/uiTools.js`
 
-项目对 Naive UI 离散 API 做了统一封装，并挂在 `window` 上：
+项目保留了原有的全局调用入口，但底层已经改为 Arco 的消息体系，并挂在 `window` 上：
 
 - `window.$message`
 - `window.$dialog`
@@ -454,6 +458,24 @@ Pinia 初始化文件：
 同时也意味着：
 
 - 某些通用逻辑对全局运行时环境有依赖，后续若做 SSR 或更严格的运行隔离，需要额外处理
+
+### 14.1 UI 适配层
+
+文件：
+
+- `src/ui/index.js`
+
+当前项目没有把所有复杂交互一次性改成原生 `a-*` 细节调用，而是增加了一层中性 UI 适配：
+
+- 统一导出 `UiButton`、`UiForm`、`UiDataTable`、`UiMenu`、`UiModal` 等中性组件名
+- 底层改为调用 `Arco Design Vue`
+- 这样可以在尽量不动业务逻辑的前提下完成 UI 框架迁移
+
+后续二开建议：
+
+- 新页面优先直接使用 `Arco Design Vue`
+- 现有页面若继续复用适配层，统一使用 `Ui*` 组件名
+- 如果后续要进一步压缩适配层，可以按页面逐步替换成原生 `a-*` 组件
 
 ## 15. 通用业务抽象
 

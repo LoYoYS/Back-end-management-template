@@ -9,7 +9,7 @@
 <template>
   <CommonPage :show-header="false">
     <div class="wh-full flex">
-      <n-result
+      <a-result
         m-auto
         status="404"
         title="404 您访问的页面不存在"
@@ -17,11 +17,9 @@
         size="large"
       >
         <template #footer>
-          <n-button type="primary" ghost @click="replace('/')">
-            返回首页
-          </n-button>
+          <a-button type="outline" @click="replace('/')"> 返回首页 </a-button>
         </template>
-      </n-result>
+      </a-result>
     </div>
   </CommonPage>
 </template>

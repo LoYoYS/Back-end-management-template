@@ -16,7 +16,7 @@ export const router = createRouter({
       ? createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH || '/')
       : createWebHistory(import.meta.env.VITE_PUBLIC_PATH || '/'),
   routes: basicRoutes,
-  scrollBehavior: () => ({ left: 0, top: 0 }),
+  scrollBehavior: () => ({ left: 0, top: 0 })
 })
 
 export async function setupRouter(app) {

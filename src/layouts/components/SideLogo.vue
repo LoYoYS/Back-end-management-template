@@ -13,15 +13,14 @@
       v-show="!appStore.collapsed"
       class="ml-10 max-w-140 flex-shrink-0 text-16 color-primary font-bold"
     >
-      {{ title }}
+      {{ systemName }}
     </h2>
   </router-link>
 </template>
 
 <script setup>
+import { systemName } from '@/settings'
 import { useAppStore } from '@/store'
-
-const title = import.meta.env.VITE_TITLE
 
 const appStore = useAppStore()
 </script>

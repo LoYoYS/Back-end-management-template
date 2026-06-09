@@ -23,7 +23,7 @@ class Storage {
     const stringData = JSON.stringify({
       value,
       time: Date.now(),
-      expire: !isNullOrUndef(expire) ? Date.now() + expire * 1000 : null,
+      expire: !isNullOrUndef(expire) ? Date.now() + expire * 1000 : null
     })
     this.storage.setItem(this.getKey(key), stringData)
   }
@@ -35,8 +35,7 @@ class Storage {
 
   getItem(key, def = null) {
     const val = this.storage.getItem(this.getKey(key))
-    if (!val)
-      return def
+    if (!val) return def
     try {
       const data = JSON.parse(val)
       const { value, time, expire } = data
@@ -45,8 +44,7 @@ class Storage {
       }
       this.remove(key)
       return def
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error)
       this.remove(key)
       return def

@@ -27,8 +27,8 @@ async function toggleDark({ clientX, clientY }) {
     `circle(0px at ${clientX}px ${clientY}px)`,
     `circle(${Math.hypot(
       Math.max(clientX, window.innerWidth - clientX),
-      Math.max(clientY, window.innerHeight - clientY),
-    )}px at ${clientX}px ${clientY}px)`,
+      Math.max(clientY, window.innerHeight - clientY)
+    )}px at ${clientX}px ${clientY}px)`
   ]
 
   await document.startViewTransition(handler).ready
@@ -39,8 +39,8 @@ async function toggleDark({ clientX, clientY }) {
       duration: 500,
       easing: 'ease-in',
       pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`,
-      fill: 'both',
-    },
+      fill: 'both'
+    }
   )
 }
 </script>

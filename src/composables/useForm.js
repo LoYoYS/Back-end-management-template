@@ -6,20 +6,26 @@
  * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
  **********************************/
 
-import { cloneDeep } from 'lodash-es'
+import { deepClone } from '@/utils/common'
 
 export function useForm(initFormData = {}) {
   const formRef = ref(null)
-  const formModel = ref(cloneDeep(initFormData))
+  const formModel = ref(deepClone(initFormData))
   const rules = {
     required: {
       required: true,
-      message: '此为必填项',
-      trigger: ['blur', 'change'],
-    },
+      message: '该项不能为空',
+      trigger: ['blur', 'change']
+    }
   }
-  const validation = () => {
-    return formRef.value?.validate()
+
+  const validation = async () => {
+    const errors = await formRef.value?.validate()
+    if (errors) {
+      throw errors
+    }
+    return true
   }
+
   return [formRef, formModel, validation, rules]
 }

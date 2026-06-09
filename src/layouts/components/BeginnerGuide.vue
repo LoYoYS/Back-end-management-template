@@ -1,40 +1,57 @@
 <template>
-  <n-tooltip trigger="hover">
-    <template #trigger>
-      <i
-        class="i-fe:beginner mr-16 cursor-pointer text-20"
-        @click="show = true"
-      />
-    </template>
-    操作指引
-  </n-tooltip>
+  <a-tooltip>
+    <i class="i-fe:beginner mr-16 cursor-pointer text-20" @click="show = true" />
+    <template #content> 操作指引 </template>
+  </a-tooltip>
 
-  <Vue3IntroStep
-    ref="myIntroStep"
-    v-model:show="show"
-    :config="config"
-  >
+  <Vue3IntroStep ref="myIntroStep" v-model:show="show" :config="config">
     <template #prev="{ tipItem, index }">
-      <NButton class="mr-12" type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="prev(tipItem, index)">
+      <a-button
+        class="mr-12"
+        type="outline"
+        shape="round"
+        size="mini"
+        style="color: #fff; border-color: #fff"
+        @click="prev(tipItem, index)"
+      >
         上一步
-      </NButton>
+      </a-button>
     </template>
     <template #next="{ tipItem }">
-      <NButton class="mr-12" type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="next(tipItem)">
+      <a-button
+        class="mr-12"
+        type="outline"
+        shape="round"
+        size="mini"
+        style="color: #fff; border-color: #fff"
+        @click="next(tipItem)"
+      >
         下一步
-      </NButton>
+      </a-button>
     </template>
 
     <template #skip>
-      <NButton type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="skip">
+      <a-button
+        type="outline"
+        shape="round"
+        size="mini"
+        style="color: #fff; border-color: #fff"
+        @click="skip"
+      >
         跳过
-      </NButton>
+      </a-button>
     </template>
 
     <template #done>
-      <NButton type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="done">
+      <a-button
+        type="outline"
+        shape="round"
+        size="mini"
+        style="color: #fff; border-color: #fff"
+        @click="done"
+      >
         完成
-      </NButton>
+      </a-button>
     </template>
   </Vue3IntroStep>
 </template>
@@ -48,56 +65,56 @@ const config = {
   backgroundOpacity: 0.8,
   titleStyle: {
     textAlign: 'left',
-    fontSize: '18px',
+    fontSize: '18px'
   },
   contentStyle: {
     textAlign: 'left',
-    fontSize: '14px',
+    fontSize: '14px'
   },
   tips: [
     {
       el: '#toggleTheme',
       tipPosition: 'bottom',
       title: '切换系统主题',
-      content: '一键开启护眼模式',
+      content: '一键开启护眼模式'
     },
     {
       el: '#fullscreen',
       tipPosition: 'bottom',
       title: '全屏/退出全屏',
-      content: '一键开启全屏',
+      content: '一键开启全屏'
     },
     {
       el: '#theme-setting',
       tipPosition: 'bottom',
       title: '设置主题色',
-      content: '调整为你喜欢的主题色',
+      content: '调整为你喜欢的主题色'
     },
     {
       el: '#user-dropdown',
       tipPosition: 'bottom',
       title: '个人中心',
-      content: '查看个人资料和退出系统',
+      content: '查看个人资料和退出系统'
     },
     {
       el: '#menu-collapse',
       tipPosition: 'bottom',
       title: '展开/收起菜单',
-      content: '一键展开/收起菜单',
+      content: '一键展开/收起菜单'
     },
     {
       el: '#top-tab',
       tipPosition: 'bottom',
       title: '标签栏',
-      content: '鼠标滚轮滑动可调整至最佳视野',
+      content: '鼠标滚轮滑动可调整至最佳视野'
     },
     {
       el: '#layout-setting',
       tipPosition: 'left',
       title: '调整系统布局',
-      content: '将系统布局调整为你喜欢的样子',
-    },
-  ],
+      content: '将系统布局调整为你喜欢的样子'
+    }
+  ]
 }
 
 function skip() {
@@ -109,12 +126,10 @@ function done() {
 }
 
 function next() {
-  // tipItem当前的提示项信息
-  // 调用vue3-intro-step的next方法 手动触发下一步
   myIntroStep.value.next()
 }
+
 function prev() {
-  // 调用vue3-intro-step的prev方法 手动触发上一步
   myIntroStep.value.prev()
 }
 </script>

@@ -8,90 +8,70 @@
 
 <template>
   <CommonPage show-footer>
-    <n-space size="large">
-      <n-card title="按钮 Button">
-        <n-space>
-          <n-button>Default</n-button>
-          <n-button type="tertiary">
-            Tertiary
-          </n-button>
-          <n-button type="primary">
-            Primary
-          </n-button>
-          <n-button type="info">
-            Info
-          </n-button>
-          <n-button type="success">
-            Success
-          </n-button>
-          <n-button type="warning">
-            Warning
-          </n-button>
-          <n-button type="error">
-            Error
-          </n-button>
-        </n-space>
-      </n-card>
+    <a-space size="large">
+      <a-card title="按钮 Button">
+        <a-space>
+          <a-button>Default</a-button>
+          <a-button type="text"> Tertiary </a-button>
+          <a-button type="primary"> Primary </a-button>
+          <a-button type="primary"> Info </a-button>
+          <a-button type="primary" status="success"> Success </a-button>
+          <a-button type="primary" status="warning"> Warning </a-button>
+          <a-button type="primary" status="danger"> Error </a-button>
+        </a-space>
+      </a-card>
 
-      <n-card title="带 Icon 的按钮">
-        <n-space>
-          <n-button type="info">
+      <a-card title="带 Icon 的按钮">
+        <a-space>
+          <a-button type="primary">
             <i class="i-material-symbols:add mr-4 text-18" />
             新增
-          </n-button>
-          <n-button type="error">
+          </a-button>
+          <a-button type="primary" status="danger">
             <i class="i-material-symbols:delete-outline mr-4 text-18" />
             删除
-          </n-button>
-          <n-button type="warning">
+          </a-button>
+          <a-button type="primary" status="warning">
             <i class="i-material-symbols:edit-outline mr-4 text-18" />
             编辑
-          </n-button>
-          <n-button type="primary">
+          </a-button>
+          <a-button type="primary">
             <i class="i-majesticons:eye-line mr-4 text-18" />
             查看
-          </n-button>
-        </n-space>
-      </n-card>
-    </n-space>
+          </a-button>
+        </a-space>
+      </a-card>
+    </a-space>
 
-    <n-space size="large" mt-30>
-      <n-card min-w-340 title="通知 Notification">
-        <n-space>
-          <n-button @click="notify('info')">
-            信息
-          </n-button>
-          <n-button @click="notify('success')">
-            成功
-          </n-button>
-          <n-button @click="notify('warning')">
-            警告
-          </n-button>
-          <n-button @click="notify('error')">
-            错误
-          </n-button>
-        </n-space>
-      </n-card>
+    <a-space size="large" mt-30>
+      <a-card min-w-340 title="通知 Notification">
+        <a-space>
+          <a-button @click="notify('info')"> 信息 </a-button>
+          <a-button @click="notify('success')"> 成功 </a-button>
+          <a-button @click="notify('warning')"> 警告 </a-button>
+          <a-button @click="notify('error')"> 错误 </a-button>
+        </a-space>
+      </a-card>
 
-      <n-card min-w-340 title="确认弹窗 Dialog">
-        <n-button type="error" @click="handleDelete">
+      <a-card min-w-340 title="确认弹窗 Dialog">
+        <a-button type="primary" status="danger" @click="handleDelete">
           <i class="i-mi:delete mr-4" />
           删除
-        </n-button>
-      </n-card>
+        </a-button>
+      </a-card>
 
-      <n-card min-w-340 title="消息提醒 Message">
-        <n-space>
-          <n-button :loading="loading" type="primary" @click="handleLogin">
+      <a-card min-w-340 title="消息提醒 Message">
+        <a-space>
+          <a-button :loading="loading" type="primary" @click="handleLogin">
             <i v-show="!loading" class="i-mdi:login mr-4" />
             登录
-          </n-button>
-          <n-button type="error" @click="handleMultiMessage">
+          </a-button>
+          <a-button type="primary" status="danger" @click="handleMultiMessage">
             多个错误提醒
-          </n-button>
-        </n-space>
-      </n-card>
-    </n-space>
+          </a-button>
+        </a-space>
+      </a-card>
+    </a-space>
   </CommonPage>
 </template>
 
@@ -106,7 +86,7 @@ function handleDelete() {
     },
     cancel() {
       $message.warning('已取消')
-    },
+    }
   })
 }
 
@@ -132,7 +112,7 @@ function notify(type) {
     content: '说点啥呢',
     meta: '想不出来',
     duration: 2500,
-    keepAliveOnHover: true,
+    keepAliveOnHover: true
   })
 }
 </script>

@@ -7,23 +7,26 @@
  --------------------------------->
 
 <template>
-  <div id="top-tab">
-    <n-tabs
-      :value="tabStore.activeTab"
-      :closable="tabStore.tabs.length > 1"
-      type="card"
-      @close="(path) => tabStore.removeTab(path)"
+  <div id="top-tab" class="top-tab">
+    <a-tabs
+      :active-key="tabStore.activeTab"
+      :editable="tabStore.tabs.length > 1"
+      type="card-gutter"
+      :show-add-button="false"
+      hide-content
+      @delete="(path) => tabStore.removeTab(path)"
     >
-      <n-tab
-        v-for="item in tabStore.tabs"
-        :key="item.path"
-        :name="item.path"
-        @click="handleItemClick(item.path)"
-        @contextmenu.prevent="handleContextMenu($event, item)"
-      >
-        {{ item.title }}
-      </n-tab>
-    </n-tabs>
+      <a-tab-pane v-for="item in tabStore.tabs" :key="item.path">
+        <template #title>
+          <span
+            @click="handleItemClick(item.path)"
+            @contextmenu.prevent="handleContextMenu($event, item)"
+          >
+            {{ item.title }}
+          </span>
+        </template>
+      </a-tab-pane>
+    </a-tabs>
 
     <ContextMenu
       v-if="contextMenuOption.show"
@@ -46,7 +49,7 @@ const contextMenuOption = reactive({
   show: false,
   x: 0,
   y: 0,
-  currentPath: '',
+  currentPath: ''
 })
 
 function handleItemClick(path) {
@@ -64,7 +67,6 @@ function setContextMenu(x, y, currentPath) {
   Object.assign(contextMenuOption, { x, y, currentPath })
 }
 
-// 右击菜单
 async function handleContextMenu(e, tagItem) {
   const { clientX, clientY } = e
   hideContextMenu()
@@ -74,26 +76,34 @@ async function handleContextMenu(e, tagItem) {
 }
 </script>
 
-<style scoped>
-:deep(.n-tabs) {
-  .n-tabs-tab {
-    padding-left: 16px;
+<style scoped lang="scss">
+.top-tab {
+  :deep(.arco-tabs-nav::before),
+  :deep(.arco-tabs-content) {
+    display: none;
+  }
+
+  :deep(.arco-tabs-tab) {
     height: 36px;
-    background: transparent !important;
-    border-radius: 4px !important;
     margin-right: 4px;
-    &:hover {
-      border: 1px solid rgb(var(--primary-color)) !important;
-    }
+    border: 1px solid var(--color-border-2);
+    border-radius: 4px;
+    background: transparent;
+    transition: all 0.2s ease;
   }
-  .n-tabs-tab--active {
-    border: 1px solid rgb(var(--primary-color)) !important;
-    background-color: rgba(var(--primary-color), 0.1) !important;
+
+  :deep(.arco-tabs-tab:hover) {
+    border-color: rgb(var(--primary-color));
+    color: rgb(var(--primary-color));
   }
-  .n-tabs-pad,
-  .n-tabs-tab-pad,
-  .n-tabs-scroll-padding {
-    border: none !important;
+
+  :deep(.arco-tabs-tab-active) {
+    border-color: rgb(var(--primary-color));
+    background-color: rgba(var(--primary-color), 0.1);
+  }
+
+  :deep(.arco-tabs-nav-ink) {
+    display: none;
   }
 }
 </style>

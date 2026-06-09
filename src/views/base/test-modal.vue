@@ -8,11 +8,9 @@
 
 <template>
   <CommonPage show-footer>
-    <n-button type="primary" @click="openModal1">
-      打开第一个弹个窗
-    </n-button>
+    <a-button type="primary" @click="openModal1"> 打开第一个弹个窗 </a-button>
     <MeModal ref="$modal1">
-      <n-input v-model:value="text" />
+      <a-input v-model="text" />
     </MeModal>
     <MeModal ref="$modal2" title="上一个弹窗提交的内容">
       <h2>{{ text }}</h2>
@@ -36,7 +34,7 @@ function openModal1() {
     async onOk() {
       if (!text.value) {
         $message.warning('请输入内容')
-        return false // 阻止弹窗关闭
+        return false
       }
       okLoading1.value = true
       $message.loading('正在提交...', { key: 'modal1' })
@@ -44,11 +42,11 @@ function openModal1() {
       okLoading1.value = false
       $message.success('提交成功', { key: 'modal1' })
       openModal2()
-      return false // 默认关闭弹窗，返回false可让弹窗不关闭
+      return false
     },
     onCancel(message) {
       $message.info(message ?? '已取消')
-    },
+    }
   })
 }
 
@@ -63,11 +61,9 @@ function openModal2() {
       $message.loading('正在关闭...', { key: 'modal2' })
       await sleep(1000)
       okLoading2.value = false
-
-      // 把modal1也关了
       $modal1.value?.close()
       $message.success('已关闭', { key: 'modal2' })
-    },
+    }
   })
 }
 </script>

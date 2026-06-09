@@ -3,12 +3,35 @@
     id="fullscreen"
     class="mr-16 cursor-pointer"
     :class="isFullscreen ? 'i-fe:minimize' : 'i-fe:maximize'"
-    @click="toggle"
+    @click="toggleFullscreen"
   />
 </template>
 
 <script setup>
-import { useFullscreen } from '@vueuse/core'
+const isFullscreen = ref(!!document.fullscreenElement)
 
-const { isFullscreen, toggle } = useFullscreen()
+function syncFullscreenState() {
+  isFullscreen.value = !!document.fullscreenElement
+}
+
+async function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen()
+    } else {
+      await document.documentElement.requestFullscreen()
+    }
+    syncFullscreenState()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('fullscreenchange', syncFullscreenState)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', syncFullscreenState)
+})
 </script>

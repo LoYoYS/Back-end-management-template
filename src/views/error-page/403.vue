@@ -9,7 +9,7 @@
 <template>
   <CommonPage :show-header="false">
     <div class="wh-full flex">
-      <n-result
+      <a-result
         class="m-auto"
         status="403"
         title="403 禁止访问"
@@ -17,14 +17,10 @@
         size="large"
       >
         <template #footer>
-          <n-button v-if="back" type="primary" ghost @click="router.replace(back)">
-            返回上一页
-          </n-button>
-          <n-button type="primary" class="ml-20" @click="router.replace('/')">
-            返回首页
-          </n-button>
+          <a-button v-if="back" type="outline" @click="router.replace(back)"> 返回上一页 </a-button>
+          <a-button type="primary" class="ml-20" @click="router.replace('/')"> 返回首页 </a-button>
         </template>
-      </n-result>
+      </a-result>
     </div>
   </CommonPage>
 </template>
@@ -37,8 +33,7 @@ const back = history.state.back
 
 if (history.state.from === 'permission-guard') {
   delete history.state.from
-}
-else if (route.query.path) {
+} else if (route.query.path) {
   router.replace(route.query.path)
 }
 </script>

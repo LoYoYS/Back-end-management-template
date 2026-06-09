@@ -14,6 +14,6 @@
 
 <script setup>
 defineProps({
-  bordered: Boolean,
+  bordered: Boolean
 })
 </script>

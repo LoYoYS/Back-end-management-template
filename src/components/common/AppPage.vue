@@ -14,7 +14,7 @@
     <slot name="footer">
       <TheFooter v-if="showFooter" class="mb-12 mt-auto" />
     </slot>
-    <n-back-top :bottom="20" />
+    <a-back-top :bottom="20" />
   </main>
 </template>
 
@@ -22,11 +22,11 @@
 defineProps({
   full: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showFooter: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 })
 </script>

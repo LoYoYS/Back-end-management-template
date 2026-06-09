@@ -8,26 +8,24 @@
 
 <template>
   <MeModal ref="modalRef" title="请选择角色" width="360px" class="p-12">
-    <n-radio-group v-model:value="roleCode" class="cus-scroll-y max-h-420 w-full py-16">
-      <n-space vertical :size="24" class="mx-12">
-        <n-radio-button
+    <div class="cus-scroll-y max-h-420 w-full py-16">
+      <div class="mx-12 flex-col gap-24">
+        <a-button
           v-for="role in roles"
           :key="role.id"
           class="h-36 w-full text-center text-16 leading-36"
-          :class="{ 'bg-primary! color-white!': role.code === roleCode }"
-          :value="role.code"
+          :type="role.code === roleCode ? 'primary' : 'outline'"
+          @click="roleCode = role.code"
         >
           {{ role.name }}
-        </n-radio-button>
-      </n-space>
-    </n-radio-group>
+        </a-button>
+      </div>
+    </div>
 
     <template #footer>
       <div class="flex">
-        <n-button class="flex-1" size="large" @click="logout()">
-          退出登录
-        </n-button>
-        <n-button
+        <a-button class="flex-1" size="large" @click="logout()"> 退出登录 </a-button>
+        <a-button
           :loading="okLoading"
           class="ml-20 flex-1"
           type="primary"
@@ -36,7 +34,7 @@
           @click="setCurrentRole"
         >
           确认
-        </n-button>
+        </a-button>
       </div>
     </template>
   </MeModal>
@@ -57,7 +55,7 @@ const roleCode = ref(userStore.currentRole?.code ?? roles.value[0]?.code ?? '')
 const [modalRef, okLoading] = useModal()
 function open(options) {
   modalRef.value?.open({
-    ...options,
+    ...options
   })
 }
 
@@ -69,8 +67,7 @@ async function setCurrentRole() {
     okLoading.value = false
     $message.success('切换成功')
     modalRef.value?.handleOk()
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error)
     okLoading.value = false
     return false
@@ -85,6 +82,6 @@ async function logout() {
 }
 
 defineExpose({
-  open,
+  open
 })
 </script>

@@ -1,8 +1,10 @@
 {
-  "prettier.enable": false,
-  "editor.formatOnSave": false,
+  // Prettier
+  "prettier.enable": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
 
-  // Auto fix
+  // ESLint auto fix on save
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
@@ -19,5 +21,9 @@
     "markdown",
     "json",
     "jsonc"
-  ]
+  ],
+
+  // Disable built-in JS/TS formatter to avoid conflicts with Prettier
+  "javascript.format.enable": false,
+  "typescript.format.enable": false
 }

@@ -17,7 +17,7 @@ export function useAliveData(initData = {}, key) {
     (v) => {
       lastDataMap.set(key, v)
     },
-    { deep: true },
+    { deep: true }
   )
 
   return {
@@ -25,6 +25,6 @@ export function useAliveData(initData = {}, key) {
     reset() {
       aliveData.value = { ...initData }
       lastDataMap.delete(key)
-    },
+    }
   }
 }

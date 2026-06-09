@@ -8,55 +8,58 @@
 
 <template>
   <div class="h-full flex flex-col overflow-hidden">
-    <AppCard v-if="$slots.default" bordered bg="#fafafc dark:black" class="mb-30 min-h-60 rounded-4">
+    <AppCard
+      v-if="$slots.default"
+      bordered
+      bg="#fafafc dark:black"
+      class="mb-30 min-h-60 rounded-4"
+    >
       <form class="flex justify-between p-16" @submit.prevent="handleSearch()">
-        <n-scrollbar x-scrollable>
-          <n-space :wrap="!expand || isExpanded" :size="[32, 16]" class="p-10">
+        <a-scrollbar>
+          <a-space :wrap="!expand || isExpanded" :size="[32, 16]" class="p-10">
             <slot />
-          </n-space>
-        </n-scrollbar>
+          </a-space>
+        </a-scrollbar>
         <div class="flex-shrink-0 p-10">
-          <n-button ghost type="primary" @click="handleReset">
+          <a-button type="outline" @click="handleReset">
             <i class="i-fe:rotate-ccw mr-4" />
             重置
-          </n-button>
-          <n-button attr-type="submit" class="ml-20" type="primary">
+          </a-button>
+          <a-button html-type="submit" class="ml-20" type="primary">
             <i class="i-fe:search mr-4" />
             搜索
-          </n-button>
+          </a-button>
 
           <template v-if="expand">
-            <n-button v-if="!isExpanded" type="primary" text @click="toggleExpand">
+            <a-button v-if="!isExpanded" type="text" @click="toggleExpand">
               <i class="i-fe:chevrons-down ml-4" />
               展开
-            </n-button>
-            <n-button v-else text type="primary" @click="toggleExpand">
+            </a-button>
+            <a-button v-else type="text" @click="toggleExpand">
               <i class="i-fe:chevrons-up ml-4" />
               收起
-            </n-button>
+            </a-button>
           </template>
         </div>
       </form>
     </AppCard>
 
-    <NDataTable
-      :remote="remote"
+    <a-table
       :loading="loading"
-      :scroll-x="scrollX"
-      :columns="columns"
+      :columns="tableColumns"
       :data="tableData"
       :row-key="(row) => row[rowKey]"
-      :pagination="isPagination ? pagination : false"
-      flex-height
+      :pagination="tablePagination"
+      :row-selection="rowSelection"
+      :scroll="scrollX ? { x: scrollX } : undefined"
       class="flex-1"
-      @update:checked-row-keys="onChecked"
-      @update:page="onPageChange"
+      @selection-change="onChecked"
+      @page-change="onPageChange"
     />
   </div>
 </template>
 
 <script setup>
-import { NDataTable } from 'naive-ui'
 import { utils, writeFile } from 'xlsx'
 
 const props = defineProps({
@@ -65,33 +68,33 @@ const props = defineProps({
    */
   remote: {
     type: Boolean,
-    default: true,
+    default: true
   },
   /**
    * @isPagination 是否分页
    */
   isPagination: {
     type: Boolean,
-    default: true,
+    default: true
   },
   scrollX: {
     type: Number,
-    default: 1200,
+    default: 1200
   },
   rowKey: {
     type: String,
-    default: 'id',
+    default: 'id'
   },
   columns: {
     type: Array,
-    required: true,
+    required: true
   },
   /** queryBar中的参数 */
   queryItems: {
     type: Object,
     default() {
       return {}
-    },
+    }
   },
   /**
    * ! 约定接口入参出参
@@ -104,22 +107,23 @@ const props = defineProps({
    */
   getData: {
     type: Function,
-    required: true,
+    required: true
   },
   /** 是否支持展开 */
-  expand: Boolean,
+  expand: Boolean
 })
 
 const emit = defineEmits(['update:queryItems', 'onChecked', 'onDataChange'])
 const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
+const checkedRowKeys = ref([])
 const pagination = reactive({
   page: 1,
   pageSize: 10,
   prefix({ itemCount }) {
     return `共 ${itemCount} 条数据`
-  },
+  }
 })
 
 // 是否展开
@@ -128,6 +132,50 @@ const isExpanded = ref(false)
 function toggleExpand() {
   isExpanded.value = !isExpanded.value
 }
+
+const tableColumns = computed(() =>
+  props.columns
+    .filter((column) => column.type !== 'selection')
+    .map((column) => {
+      const nextColumn = {
+        title: column.title,
+        dataIndex: column.key || column.dataIndex,
+        align: column.align,
+        width: column.width,
+        fixed: column.fixed,
+        ellipsis: !!column.ellipsis,
+        tooltip: column.ellipsis?.tooltip ?? column.tooltip
+      }
+
+      if (typeof column.render === 'function') {
+        nextColumn.render = ({ record, rowIndex }) => column.render(record, rowIndex)
+      }
+
+      return nextColumn
+    })
+)
+
+const rowSelection = computed(() => {
+  if (!props.columns.some((item) => item.type === 'selection')) {
+    return undefined
+  }
+  return {
+    type: 'checkbox',
+    selectedRowKeys: checkedRowKeys.value
+  }
+})
+
+const tablePagination = computed(() => {
+  if (!props.isPagination) {
+    return false
+  }
+  return {
+    current: pagination.page,
+    pageSize: pagination.pageSize,
+    total: pagination.itemCount,
+    showTotal: true
+  }
+})
 
 async function handleQuery() {
   try {
@@ -139,7 +187,7 @@ async function handleQuery() {
     }
     const { data } = await props.getData({
       ...props.queryItems,
-      ...paginationParams,
+      ...paginationParams
     })
     tableData.value = data?.pageData || data
     pagination.itemCount = data.total ?? data.length
@@ -147,13 +195,11 @@ async function handleQuery() {
       // 如果当前页数据为空，且总条数不为0，则返回上一页数据
       onPageChange(pagination.page - 1)
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error)
     tableData.value = []
     pagination.itemCount = 0
-  }
-  finally {
+  } finally {
     emit('onDataChange', tableData.value)
     loading.value = false
   }
@@ -162,8 +208,7 @@ async function handleQuery() {
 function handleSearch(keepCurrentPage = false) {
   if (keepCurrentPage || !props.remote) {
     handleQuery()
-  }
-  else {
+  } else {
     onPageChange(1)
   }
 }
@@ -184,17 +229,17 @@ function onPageChange(currentPage) {
   }
 }
 function onChecked(rowKeys) {
-  if (props.columns.some(item => item.type === 'selection')) {
+  checkedRowKeys.value = rowKeys || []
+  if (props.columns.some((item) => item.type === 'selection')) {
     emit('onChecked', rowKeys)
   }
 }
 function handleExport(columns = props.columns, data = tableData.value) {
-  if (!data?.length)
-    return $message.warning('没有数据')
-  const columnsData = columns.filter(item => !!item.title && !item.hideInExcel)
-  const thKeys = columnsData.map(item => item.key)
-  const thData = columnsData.map(item => item.title)
-  const trData = data.map(item => thKeys.map(key => item[key]))
+  if (!data?.length) return $message.warning('没有数据')
+  const columnsData = columns.filter((item) => !!item.title && !item.hideInExcel)
+  const thKeys = columnsData.map((item) => item.key)
+  const thData = columnsData.map((item) => item.title)
+  const trData = data.map((item) => thKeys.map((key) => item[key]))
   const sheet = utils.aoa_to_sheet([thData, ...trData])
   const workBook = utils.book_new()
   utils.book_append_sheet(workBook, sheet, '数据报表')
@@ -204,6 +249,6 @@ function handleExport(columns = props.columns, data = tableData.value) {
 defineExpose({
   handleSearch,
   handleReset,
-  handleExport,
+  handleExport
 })
 </script>

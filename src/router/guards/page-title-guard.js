@@ -6,15 +6,16 @@
  * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
  **********************************/
 
-const baseTitle = import.meta.env.VITE_TITLE
+import { systemName } from '@/settings'
+
+const baseTitle = systemName
 
 export function createPageTitleGuard(router) {
   router.afterEach((to) => {
     const pageTitle = to.meta?.title
     if (pageTitle) {
       document.title = `${pageTitle} | ${baseTitle}`
-    }
-    else {
+    } else {
       document.title = baseTitle
     }
   })

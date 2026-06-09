@@ -21,15 +21,15 @@
 defineProps({
   label: {
     type: String,
-    default: '',
+    default: ''
   },
   labelWidth: {
     type: Number,
-    default: 80,
+    default: 80
   },
   contentWidth: {
     type: Number,
-    default: 220,
-  },
+    default: 220
+  }
 })
 </script>

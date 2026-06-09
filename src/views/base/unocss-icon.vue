@@ -9,18 +9,17 @@
 <template>
   <CommonPage show-footer>
     <template #title-suffix>
-      <n-tooltip
-        placement="bottom"
-        trigger="hover"
-      >
-        <template #trigger>
-          <a href="https://juejin.cn/post/7394789388154241033" target="_blank" class="ml-12 flex cursor-pointer items-center hover:underline">
-            <i class="i-simple-icons:juejin text-#1E80FF" />
-            <span class="ml-4">Unocss 图标</span>
-          </a>
-        </template>
-        点击查看如何使用 Unocss 图标
-      </n-tooltip>
+      <a-tooltip position="bottom">
+        <a
+          href="https://juejin.cn/post/7394789388154241033"
+          target="_blank"
+          class="ml-12 flex cursor-pointer items-center hover:underline"
+        >
+          <i class="i-simple-icons:juejin text-#1E80FF" />
+          <span class="ml-4">Unocss 图标</span>
+        </a>
+        <template #content> 点击查看如何使用 Unocss 图标 </template>
+      </a-tooltip>
     </template>
     <ul class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-items-center gap-16">
       <li
@@ -48,7 +47,6 @@ import icons from 'isme:icons'
 const { copy, copied } = useClipboard()
 
 watch(copied, (val) => {
-  if (val)
-    $message.success('已复制到剪切板')
+  if (val) $message.success('已复制到剪切板')
 })
 </script>

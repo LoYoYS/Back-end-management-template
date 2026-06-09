@@ -6,13 +6,13 @@
  * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
  **********************************/
 
-import { cloneDeep } from 'lodash-es'
+import { deepClone } from '@/utils/common'
 import { useForm, useModal } from '.'
 
 const ACTIONS = {
   view: '查看',
   edit: '编辑',
-  add: '新增',
+  add: '新增'
 }
 
 export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, refresh }) {
@@ -22,7 +22,7 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
 
   /** 新增 */
   function handleAdd(row = {}, title) {
-    handleOpen({ action: 'add', title, row: Object.assign({}, cloneDeep(initForm), cloneDeep(row)) })
+    handleOpen({ action: 'add', title, row: { ...deepClone(initForm), ...deepClone(row) } })
   }
 
   /** 修改 */
@@ -45,12 +45,11 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
       async onOk() {
         if (typeof onOk === 'function') {
           return await onOk()
-        }
-        else {
+        } else {
           return await handleSave()
         }
       },
-      title: title ?? (ACTIONS[modalAction.value] || '') + name,
+      title: title ?? (ACTIONS[modalAction.value] || '') + name
     })
   }
 
@@ -63,12 +62,12 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
     const actions = {
       add: {
         api: () => doCreate(modalForm.value),
-        cb: () => $message.success('新增成功'),
+        cb: () => $message.success('新增成功')
       },
       edit: {
         api: () => doUpdate(modalForm.value),
-        cb: () => $message.success('保存成功'),
-      },
+        cb: () => $message.success('保存成功')
+      }
     }
 
     action = action || actions[modalAction.value]
@@ -79,8 +78,7 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
       action.cb()
       okLoading.value = false
       data && refresh(data)
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error)
       okLoading.value = false
       return false
@@ -89,8 +87,7 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
 
   /** 删除 */
   function handleDelete(id, confirmOptions) {
-    if (!id && id !== 0)
-      return
+    if (!id && id !== 0) return
     const d = $dialog.warning({
       content: '确定删除？',
       title: '提示',
@@ -103,13 +100,12 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
           $message.success('删除成功')
           d.loading = false
           refresh(data, true)
-        }
-        catch (error) {
+        } catch (error) {
           console.error(error)
           d.loading = false
         }
       },
-      ...confirmOptions,
+      ...confirmOptions
     })
   }
 
@@ -125,6 +121,6 @@ export function useCrud({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
     handleEdit,
     handleView,
     handleOpen,
-    handleSave,
+    handleSave
   }
 }

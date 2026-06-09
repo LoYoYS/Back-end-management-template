@@ -53,20 +53,20 @@
 defineProps({
   back: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showFooter: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showHeader: {
     type: Boolean,
-    default: true,
+    default: true
   },
   title: {
     type: String,
-    default: undefined,
-  },
+    default: undefined
+  }
 })
 const route = useRoute()
 const router = useRouter()

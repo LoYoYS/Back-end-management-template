@@ -83,8 +83,6 @@
         </div>
       </div>
     </div>
-
-    <TheFooter class="py-12" />
   </div>
 </template>
 

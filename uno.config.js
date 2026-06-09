@@ -32,7 +32,8 @@ export default defineConfig({
     ['auto-bg', 'bg-white dark:bg-dark'],
     ['auto-bg-hover', 'hover:bg-#eaf0f1 hover:dark:bg-#1b2429'],
     ['auto-bg-highlight', 'bg-#eaf0f1 dark:bg-#1b2429'],
-    ['text-highlight', 'rounded-4 px-8 py-2 auto-bg-highlight']
+    ['text-highlight', 'rounded-4 px-8 py-2 auto-bg-highlight'],
+    ['of-hidden', 'overflow-hidden'] // 添加这个快捷方式
   ],
   rules: [
     [

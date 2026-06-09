@@ -1,17 +1,19 @@
 <template>
-  <AConfigProvider class="wh-full" :locale="zhCn">
-    <router-view v-if="Layout" v-slot="{ Component, route: curRoute }">
-      <component :is="Layout" :key="layoutName">
-        <transition name="fade-slide" mode="out-in" appear>
-          <KeepAlive :include="keepAliveNames">
-            <component :is="Component" v-if="!tabStore.reloading" :key="curRoute.fullPath" />
-          </KeepAlive>
-        </transition>
-      </component>
+  <div class="wh-full">
+    <AConfigProvider :locale="zhCn">
+      <router-view v-if="Layout" v-slot="{ Component, route: curRoute }">
+        <component :is="Layout" :key="layoutName">
+          <transition name="fade-slide" mode="out-in" appear>
+            <KeepAlive :include="keepAliveNames">
+              <component :is="Component" v-if="!tabStore.reloading" :key="curRoute.fullPath" />
+            </KeepAlive>
+          </transition>
+        </component>
 
-      <LayoutSetting v-if="layoutSettingVisible" class="fixed right-12 top-1/2 z-999" />
-    </router-view>
-  </AConfigProvider>
+        <LayoutSetting v-if="layoutSettingVisible" class="fixed right-12 top-1/2 z-999" />
+      </router-view>
+    </AConfigProvider>
+  </div>
 </template>
 
 <script setup>
